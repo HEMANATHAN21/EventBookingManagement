@@ -86,7 +86,7 @@ public class ClientEvent
 	public String toString() {
 		return "ClientEvent [clientEventId=" + clientEventId + ", clientEventNoOfPeople=" + clientEventNoOfPeople
 				+ ", startDate=" + startDate + ", clientEventNoOfDays=" + clientEventNoOfDays + ", clientEventLocation="
-				+ clientEventLocation + ", clientEventCost=" + clientEventCost + ", clientServices=" + clientServices
+				+ clientEventLocation + ", clientEventCost=" + clientEventCost + ", clientServices\t" + clientServices
 				+ ", eventType=" + eventType + "]";
 	}
 	
