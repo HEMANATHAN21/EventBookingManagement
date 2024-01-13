@@ -28,12 +28,14 @@ public class Main
 			{
 				while(true)
 				{
-					System.out.println("Press -1- For Create Admin User");
-					System.out.println("Press -2- For Save Service To Admin DB");
-					System.out.println("Press -3- For Update Service To Admin DB");
-					System.out.println("Press -4- For Delete Service To Admin DB");
-					System.out.println("Press -5- For Show List Of Services In DB");
-					System.out.println("Press -6- For Back");
+					System.out.println("---------------------------------------------");
+					System.out.println("| Press -1- For Create Admin User           |");
+					System.out.println("| Press -2- For Save Service To Admin DB    |");
+					System.out.println("| Press -3- For Update Service To Admin DB  |");
+					System.out.println("| Press -4- For Delete Service To Admin DB  |");
+					System.out.println("| Press -5- For Show List Of Services In DB |");
+					System.out.println("| Press -6- For Back                        |");
+					System.out.println("---------------------------------------------");
 					int adOpr = sc.nextInt();
 					if(adOpr == 1)
 					{
