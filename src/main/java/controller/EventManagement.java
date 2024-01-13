@@ -206,25 +206,23 @@ public class EventManagement
 			System.out.println("Press -8- for Reunion");
 			
 			int value = sc.nextInt();
-			switch(value)
-			{
-				case 1 : ce.setEventType(EventType.Marriage);
-						break;
-				case 2 : ce.setEventType(EventType.Engagement);
-						break;
-				case 3 : ce.setEventType(EventType.Birthday);
-						break;
-				case 4 : ce.setEventType(EventType.Babyshower);
-						break;
-				case 5 : ce.setEventType(EventType.Anniversary);
-						break;
-				case 6 : ce.setEventType(EventType.BachelorParty);
-						break;
-				case 7 : ce.setEventType(EventType.NamingCeremony);
-						break;
-				case 8 : ce.setEventType(EventType.Reunion);
-						break;
-			}
+			if(value == 1)
+				ce.setEventType(EventType.Marriage);
+			else if(value == 2)
+				ce.setEventType(EventType.Engagement);
+			else if(value == 3)
+				ce.setEventType(EventType.Birthday);
+			else if(value ==4)
+				ce.setEventType(EventType.Babyshower);
+			else if(value == 5)
+				ce.setEventType(EventType.Anniversary);
+			else if(value == 6)
+				ce.setEventType(EventType.BachelorParty);
+			else if(value == 7)
+				ce.setEventType(EventType.NamingCeremony);
+			else if(value == 8)
+				ce.setEventType(EventType.Reunion);
+			
 			ce.setStartDate(LocalDate.now());
 			System.out.print("No Of Days : "); ce.setClientEventNoOfDays(sc.nextInt());
 			System.out.print("No Of People : "); ce.setClientEventNoOfPeople(sc.nextInt());
@@ -273,7 +271,7 @@ public class EventManagement
 		}
 		return "Client Event Not Added";
 	}
-	public ClientEvent displayClientEvent()
+	public ClientEvent getClientEvent()
 	{
 		Client c = clientLogin();
 		if(c != null)
@@ -285,6 +283,22 @@ public class EventManagement
 			return ce;
 		}
 		return null;
+	}
+	public void displayClientEventDetails(ClientEvent ce)
+	{
+		System.out.println("Event ID : "+ce.getClientEventId());
+		System.out.println("Event Type : "+ce.getEventType());
+		System.out.println("Event Client Name : "+ce.getClient().getClientName());
+		System.out.println("Event Client Email : "+ce.getClient().getClientEmail());
+		System.out.println("Event Location : "+ce.getClientEventLocation());
+		System.out.println("Total People Count : "+ce.getClientEventNoOfPeople());
+		System.out.println("Total Cost : "+ce.getClientEventCost());
+		
+		List<ClientService> clientServicesList = ce.getClientServices();
+		for (ClientService clientService : clientServicesList) 
+		{
+			System.out.println(clientService);
+		}
 	}
 	public static void main(String[] args) 
 	{

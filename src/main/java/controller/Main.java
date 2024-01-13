@@ -6,6 +6,7 @@ import java.util.Scanner;
 import dto.Admin;
 import dto.Client;
 import dto.ClientEvent;
+import dto.ClientService;
 import dto.Service;
 
 public class Main 
@@ -21,7 +22,7 @@ public class Main
 			System.out.println("\t|           EVENT BOOKING MANAGEMENT             |");
 			System.out.println("\t--------------------------------------------------");
 			System.out.println("Press -1- For Admin Operation");
-			System.out.println("Press -2- For Admin Operation");
+			System.out.println("Press -2- For Client Operation");
 			int operationValue = sc.nextInt();
 			if(operationValue == 1)
 			{
@@ -108,16 +109,11 @@ public class Main
 					}
 					else if(cliOpr == 4)
 					{
-						ClientEvent ce = evm.displayClientEvent();
+						ClientEvent ce = evm.getClientEvent();
 						if(ce != null)
-						{
-							System.out.println("Event ID : "+ce.getClientEventId());
-							System.out.println("Event Type : "+ce.getEventType());
-							System.out.println("Event Location : "+ce.getClientEventLocation());
-							System.out.println("Total People Count : "+ce.getClientEventNoOfPeople());
-							System.out.println("Total Cost : ");
-						}
-							
+							evm.displayClientEventDetails(ce);
+						else
+							System.out.println("Some Errors Occured..");		
 					}
 					else if(cliOpr == 5)
 					{
