@@ -284,6 +284,7 @@ public class EventManagement
 		}
 		return null;
 	}
+	
 	public void displayClientEventDetails(ClientEvent ce)
 	{
 		System.out.println("Event ID : "+ce.getClientEventId());
@@ -299,6 +300,59 @@ public class EventManagement
 		{
 			System.out.println(clientService);
 		}
+	}
+	
+	public String addClientService()
+	{
+		System.out.println("------Add Client Service--------");
+		Client exClient = clientLogin();
+		if(exClient != null)
+		{
+			List<ClientEvent> exClientEvents = exClient.getClientEvent();
+			System.out.println("Enter Client Event Id : "); int exClientEventId = sc.nextInt();
+			int count = 0;
+			for(ClientEvent events : exClientEvents)
+			{
+				if(events.getClientEventId() == exClientEventId)
+				{
+					count ++;
+					double eventCost = events.getClientEventCost();
+					List<ClientService> exClientServices = events.getClientServices();
+					System.out.println("Enter Service Adding Count : "); int serviceCount = sc.nextInt();
+					for(int i=1;i<=serviceCount;i++)
+					{
+						ClientService cs = new ClientService();
+						List<Service> listOfServices = getAllListServices();
+						System.out.println("\t ----- Service Lists -----");
+						for (Service service : listOfServices) 
+						{
+							System.out.println(service);
+						}
+						System.out.print("Enter Service Id :");
+						int svalue = sc.nextInt();
+						Service s1 = sdao.findService(svalue);
+						cs.setClientServiceName(s1.getServiceName());
+						cs.setClientServiceNoOfDays(events.getClientEventNoOfDays());
+						cs.setClientServiceCostPerPerson(s1.getServiceCostPerPerson());
+						cs.setClientServiceCost(events.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
+						eventCost = eventCost + cs.getClientServiceCost();
+						exClientServices.add(cs);
+						ClientService cs1= csdao.saveClientService(cs);
+					}
+					
+					events.setClientEventCost(eventCost);
+					events.setClientServices(exClientServices);
+					ClientEvent ce1 = cedao.updateClientEvent(events, events.getClientEventId());
+					if(ce1 != null)
+					{
+						return "Client Service Added";
+					}
+				}
+			}
+			if(count == 0)
+				return "Invalid Id Event Not Found";
+		}
+		return "Client Service Not Added";
 	}
 	public static void main(String[] args) 
 	{
@@ -319,6 +373,7 @@ public class EventManagement
 //		System.out.println(evm.createClientEvent());
 		
 //		System.out.println(cedao.findClientEvent(3));
+		System.out.println(evm.addClientService());
 	}
 
 }
