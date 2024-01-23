@@ -252,8 +252,19 @@ public class EventManagement
 				cs.setClientServiceNoOfDays(ce.getClientEventNoOfDays());
 				cs.setClientServiceCostPerPerson(s1.getServiceCostPerPerson());
 //				cs.setClientServiceCost(ce.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson());
-				cs.setClientServiceCost(ce.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
-				eventCost = eventCost + cs.getClientServiceCost();
+				if(s1.getServiceCostPerPerson() == 1)
+				{
+					System.out.print("Enter Cost For This Service : "); double serviceCost = sc.nextDouble();
+					cs.setClientServiceCost(ce.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays() + serviceCost);
+					eventCost = eventCost + cs.getClientServiceCost();
+				}
+				else
+				{
+					cs.setClientServiceCost(ce.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
+					eventCost = eventCost + cs.getClientServiceCost();
+				}
+//				cs.setClientServiceCost(ce.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
+//				eventCost = eventCost + cs.getClientServiceCost();
 				clientServices.add(cs);
 				ClientService cs1= csdao.saveClientService(cs);
 				//System.out.println(cs1);
@@ -309,7 +320,7 @@ public class EventManagement
 		if(exClient != null)
 		{
 			List<ClientEvent> exClientEvents = exClient.getClientEvent();
-			System.out.println("Enter Client Event Id : "); int exClientEventId = sc.nextInt();
+			System.out.print("Enter Client Event Id : "); int exClientEventId = sc.nextInt();
 			int count = 0;
 			for(ClientEvent events : exClientEvents)
 			{
@@ -334,8 +345,19 @@ public class EventManagement
 						cs.setClientServiceName(s1.getServiceName());
 						cs.setClientServiceNoOfDays(events.getClientEventNoOfDays());
 						cs.setClientServiceCostPerPerson(s1.getServiceCostPerPerson());
-						cs.setClientServiceCost(events.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
-						eventCost = eventCost + cs.getClientServiceCost();
+						if(s1.getServiceCostPerPerson() == 1)
+						{
+							System.out.print("Enter Cost For This Service : "); double serviceCost = sc.nextDouble();
+							cs.setClientServiceCost(events.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays() + serviceCost);
+							eventCost = eventCost + cs.getClientServiceCost();
+						}
+						else
+						{
+							cs.setClientServiceCost(events.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
+							eventCost = eventCost + cs.getClientServiceCost();
+						}
+//						cs.setClientServiceCost(events.getClientEventNoOfPeople() * cs.getClientServiceCostPerPerson() * cs.getClientServiceNoOfDays());
+//						eventCost = eventCost + cs.getClientServiceCost();
 						exClientServices.add(cs);
 						ClientService cs1= csdao.saveClientService(cs);
 					}
@@ -353,6 +375,103 @@ public class EventManagement
 				return "Invalid Id Event Not Found";
 		}
 		return "Client Service Not Added";
+	}
+	
+	public String removeClientService()
+	{
+		System.out.println("------Remove Client Service--------");
+		Client exClient = clientLogin();
+		if(exClient != null)
+		{
+			List<ClientEvent> exClientEvents = exClient.getClientEvent();
+			System.out.println("Enter Client Event Id : "); int exClientEventId = sc.nextInt();
+			for(ClientEvent event : exClientEvents)
+			{
+				if(event.getClientEventId() == exClientEventId)
+				{
+					List<ClientService> clientServiceList = event.getClientServices();
+					List<ClientService> newClientServiceList = new ArrayList<ClientService>();
+					double eventCost = event.getClientEventCost();
+					for(ClientService cs : clientServiceList)
+					{
+						System.out.println(cs);
+					}
+					System.out.print("Enter ClientService Id : "); int csId = sc.nextInt();
+					for(ClientService cs : clientServiceList)
+					{
+						if(cs.getClientServiceId() == csId)
+						{
+							event.setClientServices(newClientServiceList);
+							eventCost = eventCost - cs.getClientServiceCost();
+							cedao.updateClientEvent(event, event.getClientEventId());
+							csdao.deleteClientService(csId);
+						}
+						else if(cs.getClientServiceId() != csId)
+						{
+							newClientServiceList.add(cs);
+						}
+					}
+					event.setClientEventCost(eventCost);
+					event.setClientServices(newClientServiceList);
+					ClientEvent updatedClientEvent = cedao.updateClientEvent(event, event.getClientEventId());
+					if(updatedClientEvent != null)
+						return "Client Service Deleted Successfully";
+				}
+			}
+			return "Client Service Id Not Found";
+		}
+		return "Client User Not Found";
+	}
+	
+	public String addClientEventOnly()
+	{
+		System.out.println("------Add Client Event Only (Without Services)--------");
+		Client exClient = clientLogin();
+		List<ClientEvent> clientEventList = exClient.getClientEvent();
+		if(exClient != null)
+		{
+			ClientEvent ce = new ClientEvent();
+			
+			System.out.println("\tEnter Event Type  ");
+			System.out.println("Press -1- for Marriage");
+			System.out.println("Press -2- for Engagement");
+			System.out.println("Press -3- for Birthday");
+			System.out.println("Press -4- for Babyshower");
+			System.out.println("Press -5- for Anniversary");
+			System.out.println("Press -6- for BachelorParty");
+			System.out.println("Press -7- for NamingCeremony");
+			System.out.println("Press -8- for Reunion");
+			
+			int value = sc.nextInt();
+			if(value == 1)
+				ce.setEventType(EventType.Marriage);
+			else if(value == 2)
+				ce.setEventType(EventType.Engagement);
+			else if(value == 3)
+				ce.setEventType(EventType.Birthday);
+			else if(value ==4)
+				ce.setEventType(EventType.Babyshower);
+			else if(value == 5)
+				ce.setEventType(EventType.Anniversary);
+			else if(value == 6)
+				ce.setEventType(EventType.BachelorParty);
+			else if(value == 7)
+				ce.setEventType(EventType.NamingCeremony);
+			else if(value == 8)
+				ce.setEventType(EventType.Reunion);
+			
+			ce.setStartDate(LocalDate.now());
+			System.out.print("No Of Days : "); ce.setClientEventNoOfDays(sc.nextInt());
+			System.out.print("No Of People : "); ce.setClientEventNoOfPeople(sc.nextInt());
+			System.out.print("Event Location : "); ce.setClientEventLocation(sc.next());
+			ce.setClient(exClient);
+			clientEventList.add(ce);
+			exClient.setClientEvent(clientEventList);
+			Client updatedClient = cdao.updateClient(exClient, exClient.getClientId());
+			if(updatedClient != null)
+				return "Client Event Added Successfully";
+		}
+		return "Client User Not Found";
 	}
 	public static void main(String[] args) 
 	{
@@ -373,7 +492,9 @@ public class EventManagement
 //		System.out.println(evm.createClientEvent());
 		
 //		System.out.println(cedao.findClientEvent(3));
-		System.out.println(evm.addClientService());
+//		System.out.println(evm.addClientService());
+//		System.out.println(evm.removeClientService());
+//		System.out.println(evm.addClientEventOnly());
 	}
 
 }

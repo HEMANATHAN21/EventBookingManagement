@@ -82,11 +82,16 @@ public class Main
 			{
 				while(true)
 				{
-					System.out.println("Press -1- For Create Client User");
-					System.out.println("Press -2- For Create ClientEvent");
-					System.out.println("Press -3- For Show Services");
-					System.out.println("Press -4- For Display ClientEvent Details");
-					System.out.println("Press -5- For Back");
+					System.out.println("\t----------------------------------------------------");
+					System.out.println("\t| Press -1- For Create Client User                 |");
+					System.out.println("\t| Press -2- For Create ClientEvent With Services   |");
+					System.out.println("\t| Press -3- For Show Services                      |");
+					System.out.println("\t| Press -4- For Display ClientEvent Details		   |");
+					System.out.println("\t| Press -5- For Save(Extra) Service To ClientEvent |");
+					System.out.println("\t| Press -6- For Add ClientEvent Without Services   |");
+					System.out.println("\t| Press -7- For Remove ClientService In ClientEvent|");
+					System.out.println("\t| Press -8- For Back							   |");
+					System.out.println("\t----------------------------------------------------");
 					int cliOpr = sc.nextInt();
 					if(cliOpr == 1)
 					{
@@ -118,6 +123,21 @@ public class Main
 							System.out.println("Some Errors Occured..");		
 					}
 					else if(cliOpr == 5)
+					{
+						String s = evm.addClientService();
+						System.out.println(s);
+					}
+					else if(cliOpr == 6)
+					{
+						String s = evm.addClientEventOnly();
+						System.out.println(s);
+					}
+					else if(cliOpr == 7)
+					{
+						String s = evm.removeClientService();
+						System.out.println(s);
+					}
+					else if(cliOpr == 8)
 					{
 						break;
 					}
